@@ -86,17 +86,22 @@
                 <div class="form__radio radio">
                     <label>
                         <input
-                            checked
                             type="radio"
                             name="theme"
                             value="Light"
+                            v-model="radio"
                         />
                         <div class="radio__info">Light</div>
                     </label>
                 </div>
                 <div class="form__radio radio">
                     <label>
-                        <input type="radio" name="theme" value="Dark" />
+                        <input
+                            type="radio"
+                            name="theme"
+                            value="Dark"
+                            v-model="radio"
+                        />
                         <div class="radio__info">Dark</div>
                     </label>
                 </div>
@@ -104,7 +109,10 @@
         </div>
         <div class="form__item">
             <div class="form__buttons">
-                <button class="form__button button button--primary">
+                <button
+                    @click.prevent="thems"
+                    class="form__button button button--primary"
+                >
                     Apply and Save
                 </button>
                 <button class="form__button button">Cancel</button>
@@ -117,9 +125,17 @@
 export default {
     data() {
         return {
+            radio: 'Light',
             selectedCity: null,
             cities: ['Monday', 'Sunday', 'System'],
         }
+    },
+    methods: {
+        thems() {
+            this.radio == 'Dark'
+                ? document.body.classList.toggle('dark')
+                : document.body.classList.remove('dark')
+        },
     },
 }
 </script>
