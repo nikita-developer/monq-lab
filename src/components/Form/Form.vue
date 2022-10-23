@@ -6,8 +6,8 @@
                 <input
                     type="text"
                     class="form__field field"
-                    value="Star and Moon"
                     placeholder="Default"
+                    v-model="сompany"
                 />
             </div>
         </div>
@@ -15,11 +15,9 @@
             <p class="form__subtitle">First Day</p>
             <div class="form__fields">
                 <Dropdown
-                    v-model="selectedCity"
-                    :options="cities"
-                    placeholder="Monday"
+                    v-model="firstDayDefault"
+                    :options="firstDayFull"
                     class="form__field select"
-                    :class="select2"
                 />
             </div>
         </div>
@@ -27,9 +25,8 @@
             <p class="form__subtitle">Container Width</p>
             <div class="form__fields">
                 <Dropdown
-                    v-model="selectedCity"
-                    :options="cities"
-                    placeholder="Fixed"
+                    v-model="containerWidthDefault"
+                    :options="containerWidthFull"
                     class="form__field select"
                 />
             </div>
@@ -38,9 +35,8 @@
             <p class="form__subtitle">Homepage</p>
             <div class="form__fields">
                 <Dropdown
-                    v-model="selectedCity"
-                    :options="cities"
-                    placeholder="Starred Projects"
+                    v-model="homepageDefault"
+                    :options="homepageFull"
                     class="form__field select"
                 />
             </div>
@@ -52,6 +48,7 @@
                     type="text"
                     class="form__field field"
                     placeholder="Default"
+                    v-model="indentSize"
                 />
             </div>
         </div>
@@ -62,19 +59,19 @@
                     <input
                         type="text"
                         class="form__number field"
-                        value="1645"
+                        v-model="PersonalCode1"
                     />
                     -
                     <input
                         type="text"
                         class="form__number field"
-                        value="1566"
+                        v-model="PersonalCode2"
                     />
                     -
                     <input
                         type="text"
                         class="form__number field"
-                        value="1249"
+                        v-model="PersonalCode3"
                     />
                 </div>
                 <p class="form__info">12 digits</p>
@@ -125,17 +122,91 @@
 export default {
     data() {
         return {
+            сompany: 'Star and Moon',
+            firstDayDefault: 'Monday',
+            firstDayFull: ['Monday', 'Sunday', 'System'],
+            containerWidthDefault: 'Fixed',
+            containerWidthFull: ['Fixed', 'Absolute', 'Relative'],
+            homepageDefault: 'Starred Projects',
+            homepageFull: ['Starred Projects', 'Projects', 'About'],
+            indentSize: 'Default',
+            PersonalCode1: 1234,
+            PersonalCode2: 4321,
+            PersonalCode3: 5678,
             radio: 'Light',
-            selectedCity: null,
-            cities: ['Monday', 'Sunday', 'System'],
         }
     },
     methods: {
         thems() {
             this.radio == 'Dark'
-                ? document.body.classList.toggle('dark')
+                ? document.body.classList.add('dark')
                 : document.body.classList.remove('dark')
+
+            localStorage.setItem(
+                'monq-lab',
+                JSON.stringify({
+                    сompany: this.сompany,
+                    firstDayDefault: this.firstDayDefault,
+                    firstDayFull: this.firstDayFull,
+                    containerWidthDefault: this.containerWidthDefault,
+                    containerWidthFull: this.containerWidthFull,
+                    homepageDefault: this.homepageDefault,
+                    homepageFull: this.homepageFull,
+                    indentSize: this.indentSize,
+                    PersonalCode1: this.PersonalCode1,
+                    PersonalCode2: this.PersonalCode2,
+                    PersonalCode3: this.PersonalCode3,
+                    radio: this.radio,
+                })
+            )
         },
+
+        localStorageOperations() {
+            if (localStorage.getItem('monq-lab')) {
+                this.сompany = JSON.parse(
+                    localStorage.getItem('monq-lab')
+                ).сompany
+                this.firstDayDefault = JSON.parse(
+                    localStorage.getItem('monq-lab')
+                ).firstDayDefault
+                this.firstDayFull = JSON.parse(
+                    localStorage.getItem('monq-lab')
+                ).firstDayFull
+                this.containerWidthDefault = JSON.parse(
+                    localStorage.getItem('monq-lab')
+                ).containerWidthDefault
+                this.containerWidthFull = JSON.parse(
+                    localStorage.getItem('monq-lab')
+                ).containerWidthFull
+                this.homepageDefault = JSON.parse(
+                    localStorage.getItem('monq-lab')
+                ).homepageDefault
+                this.homepageFull = JSON.parse(
+                    localStorage.getItem('monq-lab')
+                ).homepageFull
+                this.indentSize = JSON.parse(
+                    localStorage.getItem('monq-lab')
+                ).indentSize
+                this.PersonalCode1 = JSON.parse(
+                    localStorage.getItem('monq-lab')
+                ).PersonalCode1
+                this.PersonalCode2 = JSON.parse(
+                    localStorage.getItem('monq-lab')
+                ).PersonalCode2
+                this.PersonalCode3 = JSON.parse(
+                    localStorage.getItem('monq-lab')
+                ).PersonalCode3
+                this.radio = JSON.parse(localStorage.getItem('monq-lab')).radio
+            }
+        },
+    },
+    mounted() {
+        this.radio == 'Dark'
+            ? document.body.classList.add('dark')
+            : document.body.classList.remove('dark')
+    },
+    beforeMount() {
+        this.localStorageOperations()
     },
 }
 </script>
